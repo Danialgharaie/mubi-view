@@ -6,6 +6,14 @@ A small desktop window for [MUBI](https://mubi.com) with DRM playback. It uses
 [castLabs Electron](https://github.com/castlabs/electron-releases), a build of Electron that
 includes Widevine, so no other browser runs in the background.
 
+> [!NOTE]
+> **Personal project, not affiliated with MUBI.** This is an unofficial wrapper around the
+> mubi.com website, built for my own use. It is not endorsed by, sponsored by, or connected to
+> MUBI in any way. "MUBI" is a trademark of its owner.
+>
+> **Not maintained for others.** I only fix problems I run into myself. Issues and pull
+> requests are disabled. Feel free to fork it.
+
 ## Use
 
 | Key | Action |
