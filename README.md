@@ -36,5 +36,37 @@ EVS_PYTHON=/opt/evs/bin/python npm run dist          # -> dist/Mubi-<version>-wi
 Unzip it anywhere on Windows and run `Mubi.exe`. `SKIP_EVS=1 npm run dist` builds without
 signing (useful only for testing the packaging).
 
+### Linux and macOS (untested)
+
+The build config only targets Windows. These commands should work but haven't been tried.
+
+**Linux.** Build on Linux. No EVS signing is needed, because Linux Widevine doesn't check
+app signatures. Expect lower maximum resolution than on Windows.
+
+```sh
+npm install
+SKIP_EVS=1 npx electron-builder --linux AppImage --x64 -c.linux.icon=assets/icon.png
+# -> dist/Mubi-<version>.AppImage   (chmod +x it, then run)
+```
+
+**macOS.** This must be built on a Mac. EVS signing has to happen *before* Apple code signing,
+and the `afterPack` hook already runs before electron-builder's signing step. Without a paid
+Apple certificate, sign ad-hoc yourself afterwards:
+
+```sh
+python3 -m venv ~/evs && ~/evs/bin/pip install castlabs-evs
+~/evs/bin/python -m castlabs_evs.account signup      # once
+
+npm install
+EVS_PYTHON=~/evs/bin/python npx electron-builder --mac --dir --universal \
+  -c.mac.icon=assets/icon.png -c.mac.identity=null
+codesign --force --deep --sign - dist/mac-universal/Mubi.app
+ditto -c -k --keepParent dist/mac-universal/Mubi.app dist/Mubi-mac.zip
+```
+
+On first launch, right-click → Open to get past Gatekeeper. It isn't confirmed that Widevine
+plays with an ad-hoc signature. If playback fails, the app may need a real Apple Developer ID
+signature.
+
 `npm run icon` regenerates `assets/icon.png` and `assets/icon.ico` from `assets/icon.svg`
 (needs `rsvg-convert`).
