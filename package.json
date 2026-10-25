@@ -1,0 +1,43 @@
+{
+  "name": "mubi-view",
+  "productName": "Mubi",
+  "version": "0.1.0",
+  "description": "A lightweight desktop window for MUBI with Widevine DRM",
+  "main": "src/main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "icon": "node scripts/make-icon.js",
+    "evs:signup": "python3 -m castlabs_evs.account signup",
+    "evs:login": "python3 -m castlabs_evs.account reauth",
+    "dist": "electron-builder --win --x64"
+  },
+  "devDependencies": {
+    "electron": "https://github.com/castlabs/electron-releases#v44.9.3+wvcus",
+    "electron-builder": "^26.0.0",
+    "resedit": "^2.0.0"
+  },
+  "build": {
+    "appId": "com.danial.mubiview",
+    "productName": "Mubi",
+    "electronVersion": "44.9.3+wvcus",
+    "electronDownload": {
+      "mirror": "https://github.com/castlabs/electron-releases/releases/download/"
+    },
+    "files": [
+      "src/**/*",
+      "assets/icon.png"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "afterPack": "scripts/after-pack.js",
+    "win": {
+      "target": [
+        "zip"
+      ],
+      "icon": "assets/icon.ico",
+      "signAndEditExecutable": false
+    }
+  }
+}
